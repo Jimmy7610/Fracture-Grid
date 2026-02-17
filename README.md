@@ -16,3 +16,8 @@ http://localhost:8000/?seed=12345
 - Click current tile (if Goal): Activate
 - S then click cracked tile: Stabilize
 - Ctrl+Z: Undo
+
+
+## Tile States (Iteration 2)
+- STABLE → CRACKED → FRACTURED → LOCKED (via repeated neighbor impacts)
+- Stabilize: FRACTURED→CRACKED, CRACKED→STABLE

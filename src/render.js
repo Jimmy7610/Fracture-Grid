@@ -24,6 +24,7 @@ export function render(ctx, game) {
             ctx.fillStyle = "#0f1420";
             if (st === TILE.STABLE) ctx.fillStyle = "#0f1420";
             if (st === TILE.CRACKED) ctx.fillStyle = "#151b2b";
+            if (st === TILE.FRACTURED) ctx.fillStyle = "#121829";
             if (st === TILE.LOCKED) ctx.fillStyle = "#080a10";
             ctx.fillRect(ox + x * cell, oy + y * cell, cell, cell);
 
@@ -41,6 +42,27 @@ export function render(ctx, game) {
                 ctx.beginPath();
                 ctx.moveTo(ox + x * cell + cell * 0.2, oy + y * cell + cell * 0.8);
                 ctx.lineTo(ox + x * cell + cell * 0.8, oy + y * cell + cell * 0.2);
+                ctx.stroke();
+            }
+
+            // fractured split (minimal offset impression)
+            if (st === TILE.FRACTURED) {
+                ctx.strokeStyle = "#e6e8ee";
+                ctx.lineWidth = 1;
+
+                const x0 = ox + x * cell;
+                const y0 = oy + y * cell;
+                const off = cell * 0.08;
+
+                // a subtle “step” split: two parallel segments with a small offset
+                ctx.beginPath();
+                ctx.moveTo(x0 + cell * 0.15, y0 + cell * 0.55);
+                ctx.lineTo(x0 + cell * 0.55, y0 + cell * 0.15);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(x0 + cell * 0.15 + off, y0 + cell * 0.55 + off);
+                ctx.lineTo(x0 + cell * 0.55 + off, y0 + cell * 0.15 + off);
                 ctx.stroke();
             }
 

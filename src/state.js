@@ -1,14 +1,15 @@
 export const TILE = {
   STABLE: "stable",
   CRACKED: "cracked",
+  FRACTURED: "fractured",
   LOCKED: "locked",
 };
 
-export function cloneGame(game){
+export function cloneGame(game) {
   return JSON.parse(JSON.stringify(game));
 }
 
-export function makeEmptyGame(){
+export function makeEmptyGame() {
   return {
     size: 5,
     seed: 1,
@@ -22,17 +23,17 @@ export function makeEmptyGame(){
   };
 }
 
-export function idx(size,x,y){ return y*size + x; }
+export function idx(size, x, y) { return y * size + x; }
 
-export function pushHistory(game){
+export function pushHistory(game) {
   // store snapshot without history to avoid recursion
   const snap = cloneGame({ ...game, history: [] });
   game.history.push(snap);
 }
 
-export function undo(game){
+export function undo(game) {
   const prev = game.history.pop();
-  if(!prev) return false;
+  if (!prev) return false;
   const keepHistory = game.history; // remaining stack
   Object.assign(game, prev);
   game.history = keepHistory;

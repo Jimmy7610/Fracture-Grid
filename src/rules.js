@@ -50,7 +50,11 @@ export function activate(game) {
         if (nx < 0 || ny < 0 || nx >= s || ny >= s) continue;
         const ii = idx(s, nx, ny);
         if (game.grid[ii] === TILE.LOCKED) continue;
-        if (game.grid[ii] === TILE.CRACKED) game.grid[ii] = TILE.LOCKED;
+
+        // New progression:
+        // STABLE -> CRACKED -> FRACTURED -> LOCKED
+        if (game.grid[ii] === TILE.FRACTURED) game.grid[ii] = TILE.LOCKED;
+        else if (game.grid[ii] === TILE.CRACKED) game.grid[ii] = TILE.FRACTURED;
         else game.grid[ii] = TILE.CRACKED;
     }
 
@@ -64,9 +68,15 @@ export function enterStabilizeMode(game) {
 
 export function stabilizePick(game, x, y) {
     const i = idx(game.size, x, y);
-    if (game.grid[i] !== TILE.CRACKED) return false;
+    if (game.grid[i] !== TILE.CRACKED && game.grid[i] !== TILE.FRACTURED) return false;
     pushHistory(game);
-    game.grid[i] = TILE.STABLE;
+
+    // Repair ladder:
+    // FRACTURED -> CRACKED (partial repair)
+    // CRACKED -> STABLE (full repair)
+    if (game.grid[i] === TILE.FRACTURED) game.grid[i] = TILE.CRACKED;
+    else game.grid[i] = TILE.STABLE;
+
     game.moves += 1;
     game.mode = "normal";
     return true;
