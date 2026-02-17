@@ -70,12 +70,19 @@ export function generate(game, seed) {
             }
         }
 
-        const score = scoreDifficulty(game);
+        const breakdown = scoreDifficulty(game);
+        const score = breakdown.total;
 
         // Acceptable difficulty window (tunable)
-        if (score >= 20 && score <= 120) return game;
-
-        if (attempts > 50) return game; // fail-safe
+        if ((score >= 20 && score <= 120) || attempts > 50) {
+            game.meta = {
+                seed: game.seed,
+                scoreBreakdown: breakdown,
+                retriesUsed: attempts - 1,
+                fallbackAccepted: attempts > 50 && (score < 20 || score > 120)
+            };
+            return game;
+        }
 
         // Try next deterministic seed
         seed += 1;
@@ -111,12 +118,16 @@ function scoreDifficulty(game) {
         }
     }
 
-    // Difficulty heuristic (tweakable)
-    return (
-        goalCount * 10 +
-        lockedCount * 15 -
-        goalDist * 2
-    );
+    const goalDistScore = goalDist * 2;
+    const total = (goalCount * 10) + (lockedCount * 15) - goalDistScore;
+
+    return {
+        total,
+        goalCount,
+        lockedCount,
+        goalDistScore,
+        notes: []
+    };
 }
 
 function hasAnyStartAction(game) {
