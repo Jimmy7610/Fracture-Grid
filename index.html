@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fracture Grid (Vertical Slice)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="title">FRACTURE GRID</div>
+      <div class="meta">
+        <label>Seed <input id="seedInput" type="number" step="1" /></label>
+        <button id="newBtn">New</button>
+        <button id="undoBtn">Undo</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+    </header>
+
+    <section class="stage">
+      <canvas id="game" width="720" height="720" aria-label="Fracture Grid"></canvas>
+      <aside class="panel">
+        <div class="row"><span class="k">Goal</span><span class="v" id="goalStatus">-</span></div>
+        <div class="row"><span class="k">Moves</span><span class="v" id="moveCount">0</span></div>
+        <div class="row"><span class="k">Score</span><span class="v" id="score">-</span></div>
+        <div class="row"><span class="k">Rank</span><span class="v" id="rank">-</span></div>
+        <div class="hint">
+          Click a tile to <b>Move</b>. Click current tile to <b>Activate</b> if it is a Goal.
+          Press <b>S</b> to <b>Stabilize</b> a cracked tile (then click a cracked tile).
+          <br/><br/>
+          <b>Undo</b>: Ctrl+Z
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
